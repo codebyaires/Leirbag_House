@@ -20,3 +20,11 @@ def root():
 @app.get("/exponenciar")
 def exponenciar(a: float, b: float):
     return exponenciarf.exponenciar(a, b)
+
+@app.get("/subtrair")
+def subtrair(a: float, b: float):
+    return subtrairf.subtrair(a, b)
+
+@app.get("/fatorarf")
+def fatorarf(a, b):
+    return fatorarf.fatorarf(a, b)
