@@ -9,6 +9,7 @@ import raiz
 import fatorarf
 import subtrairf
 import exponenciarf
+import multiplicarf
 
 app = FastAPI()
 
@@ -19,12 +20,20 @@ def root():
 
 @app.get("/exponenciar")
 def exponenciar(a: float, b: float):
-    return exponenciarf.exponenciar(a, b)
+    resultado = exponenciarf.exponenciar(a, b)
+    return {"resultado": resultado}
 
 @app.get("/subtrair")
 def subtrair(a: float, b: float):
-    return subtrairf.subtrair(a, b)
+    resultado = subtrairf.subtrair(a, b)
+    return {"resultado": resultado}
 
-@app.get("/fatorarf")
-def fatorarf(a, b):
-    return fatorarf.fatorarf(a, b)
+@app.get("/fatorar")
+def fatorar(a, b):
+    resultado = fatorarf.fatorar(a, b)
+    return {"resultado": resultado}
+
+@pp.get("/multiplicar")
+def multiplicarf(a: float, b: float):
+    resultado = multiplicarf.multiplicar(a, b)
+    return {"resultado": resultado}
