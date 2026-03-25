@@ -34,8 +34,8 @@ def fatorar(a, b):
     resultado = fatorarf.fatorar(a, b)
     return {"resultado": resultado}
 
-@pp.get("/multiplicar")
-def multiplicarf(a: float, b: float):
+@app.get("/multiplicar")
+def multiplicar(a: float, b: float):
     resultado = multiplicarf.multiplicar(a, b)
     return {"resultado": resultado}
 
