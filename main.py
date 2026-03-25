@@ -15,3 +15,12 @@ app = FastAPI()
 def root():
     # Redireciona o Usuário assim que ele abrir a URL, direto para a URL '/docs' com todas as funções
     return RedirectResponse(url="/docs")
+
+print ("Hello Word")
+
+import exponenciarf 
+
+@app.get("/exponenciar")
+def rota_exponenciar(num1: float, num2: float):
+    resultado = exponenciarf.exponenciar(a, b)
+    return {"resultado": resultado}
