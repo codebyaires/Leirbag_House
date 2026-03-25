@@ -9,7 +9,11 @@ import raiz
 import fatorarf
 import subtrairf
 import exponenciarf
+<<<<<<< Updated upstream
 import multiplicarf
+=======
+import math
+>>>>>>> Stashed changes
 
 app = FastAPI()
 
@@ -20,6 +24,7 @@ def root():
 
 @app.get("/exponenciar")
 def exponenciar(a: float, b: float):
+<<<<<<< Updated upstream
     resultado = exponenciarf.exponenciar(a, b)
     return {"resultado": resultado}
 
@@ -37,3 +42,21 @@ def fatorar(a, b):
 def multiplicarf(a: float, b: float):
     resultado = multiplicarf.multiplicar(a, b)
     return {"resultado": resultado}
+=======
+    return exponenciarf.exponenciar(a, b)
+
+@app.get("/somar")
+def funsomar(a: float, b: float):
+    return somar.somar(a, b)
+
+@app.get("/divisao")
+def fundivisao(a: float, b: float):
+    return divisao.dividir(a, b)
+
+@app.get("/raiz")
+def funraiz(numero: float):
+    return math.sqrt(numero)
+    
+
+
+>>>>>>> Stashed changes
