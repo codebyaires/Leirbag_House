@@ -1,4 +1,4 @@
-def fatorar (a, b):
+def fatorar (a:int, b:int):
     if a == 0:
         return 0
     elif b == 0:
