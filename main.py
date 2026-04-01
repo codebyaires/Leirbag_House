@@ -49,7 +49,5 @@ def fundivisao(a: float, b: float):
 
 @app.get("/raiz")
 def funraiz(numero: float):
-    return math.sqrt(numero)
-    
-
-
+    resultado = raizf.raiz(numero)
+    return {"resultado": resultado}
