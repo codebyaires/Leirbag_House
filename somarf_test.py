@@ -1,7 +1,7 @@
 import pytest
 import somarf
 
-def test_soma():
+def test_somar():
     if somarf.somar(0, 0)["resultado"] != 0:
         assert False
     if somarf.somar(-1, -1)["resultado"] != -2:
