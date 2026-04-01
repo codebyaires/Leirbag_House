@@ -1,2 +1,2 @@
-def exponenciar (a, b):
+def exponenciar (a:int, b:int):
     return a ** b
