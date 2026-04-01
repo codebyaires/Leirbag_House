@@ -1,2 +1,2 @@
-def subtrair(a, b):
+def subtrair(a:float, b:float):
     return a - b
