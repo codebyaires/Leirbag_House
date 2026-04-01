@@ -8,5 +8,8 @@ def test_somar():
         assert False
     if somarf.somar(2, 2)["resultado"] != 4:
         assert False
+    if somarf.somar(2, -2)["resultado"] != 0:
+        assert False
     if somarf.somar(0.2, 0.3)["resultado"]  != pytest.approx(0.5):
         assert False
+    assert True
