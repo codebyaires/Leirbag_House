@@ -12,4 +12,9 @@ def test_somar():
         assert False
     if somarf.somar(0.2, 0.3)["resultado"]  != pytest.approx(0.5):
         assert False
+    try:
+        somarf.somar()
+        assert False
+    except TypeError:
+        pass
     assert True
