@@ -3,14 +3,13 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
 # Os Imports dos arquivos dos colaboradores afiliados
-import somar
-import divisao
-import raiz
+import somarf
+import dividirf
+import raizf
 import fatorarf
 import subtrairf
 import exponenciarf
 import multiplicarf
-import math
 
 app = FastAPI()
 
@@ -40,16 +39,14 @@ def multiplicar(a: float, b: float):
     return {"resultado": resultado}
 
 @app.get("/somar")
-def funsomar(a: float, b: float):
-    return somar.somar(a, b)
+def somar(a: float, b: float):
+    return somarf.somar(a, b)
 
 @app.get("/divisao")
-def fundivisao(a: float, b: float):
-    return divisao.dividir(a, b)
+def dividir(a: float, b: float):
+    return dividirf.dividir(a, b)
 
 @app.get("/raiz")
-def funraiz(numero: float):
-    return math.sqrt(numero)
-    
-
-
+def raiz(numero: float):
+    resultado = raizf.raiz(numero)
+    return {"resultado": resultado}
