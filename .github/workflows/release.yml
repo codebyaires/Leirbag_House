@@ -1,0 +1,54 @@
+name: release
+on:
+  push:
+    branches: [fix/release-pipeline]
+
+permissions:
+  contents: write
+
+jobs:
+  liberar: 
+    runs-on: ubuntu-latest
+    
+    steps: 
+      - name: Baixar o código
+        uses: actions/checkout@v4
+        
+      - name: Configurar o Python
+        uses: actions/setup-python@v5
+        with: 
+          python-version: '3.13'
+          
+      - name: Instalar Dependências
+        run: | 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+          
+      - name: Executar Testes
+        run: pytest 
+        
+      - name: Criar Pacote Limpo (ZIP)
+        run: |
+          # 1. Cria a pasta de limpeza FORA do diretório atual para evitar o erro de cópia infinita
+          mkdir ../dist_entrega
+          
+          # 2. Copia tudo para essa pasta externa
+          cp -r . ../dist_entrega
+          
+          # 3. Entra na pasta externa e remove o que o professor não quer
+          cd ../dist_entrega
+          rm -rf tests .git .github README.md .gitignore venv __pycache__ *.pyc
+          
+          # 4. Gera o zip e joga ele de volta para a pasta original do GitHub Actions
+          # $GITHUB_WORKSPACE é o endereço da pasta onde o robô de Release vai procurar o arquivo
+          zip -r $GITHUB_WORKSPACE/calculadora.zip .
+
+      - name: Criar Release no GitHub
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release delete v1.0.0 --yes || true
+          
+          # Cria a nova release com o ZIP limpo
+          gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."
