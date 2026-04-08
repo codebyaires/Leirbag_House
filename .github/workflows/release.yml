@@ -1,0 +1,46 @@
+name: release
+on:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+
+jobs:
+  liberar: # Nome do nosso bloco de trabalho
+    runs-on: ubuntu-latest # Servidor Linux zerado emprestado pelo GitHub
+    
+    # Passo a passo das tarefas dentro do servidor
+    steps: 
+      - name: Baixar o código
+        uses: actions/checkout@v4 # Ação oficial que faz o "git clone" do projeto
+        
+      - name: Configurar o Python
+        uses: actions/setup-python@v5 # Ação oficial que instala o ambiente Python
+        with: 
+          python-version: '3.13' # Especifica a versão exata do Python necessária
+          
+      - name: Instalar Dependências
+        # O "run" abre o terminal do SERVIDOR UBUNTU do GitHub e digita os comandos abaixo
+        run: | 
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+          pip install pytest
+          
+      - name: Executar Testes
+        # Roda o comando final no terminal do servidor para buscar e testar o código
+        run: pytest   
+        
+      - name: Criar Pacote Limpo (ZIP)
+        # O comando zip cria o arquivo 'calculadora.zip'.
+        # O '-x' diz: "Ignore essas pastas e arquivos" (testes e lixo do git)
+        run: zip -r calculadora.zip . -x "tests/*" ".github/*" ".git/*" "venv/*" "__pycache__/*" "*.pyc"
+
+      - name: Criar Release no GitHub
+        # Aqui usamos o GitHub CLI (gh) para criar a versão v1.0.0
+        # O 'env' passa a chave secreta do GitHub para o comando ter permissão de postar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."
