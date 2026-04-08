@@ -29,26 +29,15 @@ jobs:
         run: pytest 
         
       - name: Criar Pacote Limpo (ZIP)
-        # O segredo aqui é o '-x' repetido e as aspas. 
-        # Adicionei o README e o .gitignore conforme você pediu.
-        run: |
-          zip -r calculadora.zip . \
-          -x "tests/*" \
-          -x ".git/*" \
-          -x ".github/*" \
-          -x "README.md" \
-          -x ".gitignore" \
-          -x "venv/*" \
-          -x "*/__pycache__/*" \
-          -x "*.pyc"
+        # O '*' ignora arquivos ocultos (.git, .github) por padrão no Linux.
+        # O -x remove especificamente o que você não quer na entrega final.
+        run: zip -r calculadora.zip * -x "tests/*" "README.md" ".gitignore" "venv/*" "*/__pycache__/*" "*.pyc"
 
       - name: Criar Release no GitHub
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          # 1. Tenta apagar a release v1.0.0 se ela já existir. 
-          # O "|| true" serve para o código não dar erro caso a release ainda não exista.
           gh release delete v1.0.0 --yes || true
           
-          # 2. Cria a release do zero com o seu arquivo ZIP limpo.
+          # Cria a nova release com o ZIP limpo
           gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."
