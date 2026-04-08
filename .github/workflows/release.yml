@@ -1,7 +1,7 @@
 name: release
 on:
   push:
-    branches: [main]
+    branches: [fix/release-pipeline]
 
 permissions:
   contents: write
@@ -43,8 +43,12 @@ jobs:
           -x "*.pyc"
 
       - name: Criar Release no GitHub
-        # O 'env' precisa estar exatamente neste recuo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # Colocamos tudo em uma linha única para não ter erro de espaço ou caractere oculto
-        run: gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste." --clobber
+        run: |
+          # 1. Tenta apagar a release v1.0.0 se ela já existir. 
+          # O "|| true" serve para o código não dar erro caso a release ainda não exista.
+          gh release delete v1.0.0 --yes || true
+          
+          # 2. Cria a release do zero com o seu arquivo ZIP limpo.
+          gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."
