@@ -1,5 +1,5 @@
 import pytest
-import somarf
+import src.somarf as somarf
 
 def test_somar():
     if somarf.somar(0, 0)["resultado"] != 0:

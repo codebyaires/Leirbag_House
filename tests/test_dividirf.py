@@ -1,5 +1,5 @@
 import pytest
-import dividirf
+import src.dividirf as dividirf
 
 def test_dividir():
     if dividirf.dividir(10, 2)["resultado"] != 5:

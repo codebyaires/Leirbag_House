@@ -1,5 +1,5 @@
 import pytest
-from fatorarf import fatorar
+from src.fatorarf import fatorar
 
 def test_fatorar():
     if fatorar(0,1) != 0:
