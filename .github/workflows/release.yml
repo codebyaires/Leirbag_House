@@ -29,9 +29,21 @@ jobs:
         run: pytest 
         
       - name: Criar Pacote Limpo (ZIP)
-        # O '*' ignora arquivos ocultos (.git, .github) por padrão no Linux.
-        # O -x remove especificamente o que você não quer na entrega final.
-        run: zip -r calculadora.zip * -x "tests/*" "README.md" ".gitignore" "venv/*" "*/__pycache__/*" "*.pyc"
+        run: |
+          # 1. Cria uma pasta temporária chamada 'dist' (distribuição)
+          mkdir dist
+          
+          # 2. Copia todos os arquivos visíveis para lá
+          # O '*' já ignora automaticamente pastas ocultas como .git e .github
+          cp -r * dist/
+          
+          # 3. Deleta manualmente o que o professor não quer na entrega
+          rm -rf dist/tests
+          rm -rf dist/README.md
+          rm -rf dist/.gitignore
+          
+          # 4. Entra na pasta e gera o zip do que sobrou
+          cd dist && zip -r ../calculadora.zip .
 
       - name: Criar Release no GitHub
         env:
