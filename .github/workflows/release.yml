@@ -1,15 +1,14 @@
-# Nome do pipeline visível no GitHub
-name: CI Calculadora
+name: release
+on:
+  push:
+    branches: [main]
 
-# Gatilhos: O que faz o pipeline rodar?
-on: 
-  workflow_dispatch: # 1. Botão de execução manual no GitHub
-  pull_request: 
-    branches: [dev] # 2. Automático ao receber código na branch 'dev'
+permissions:
+  contents: write
 
-# Lista de trabalhos a serem executados
+
 jobs:
-  ci: # Nome do nosso bloco de trabalho
+  liberar: # Nome do nosso bloco de trabalho
     runs-on: ubuntu-latest # Servidor Linux zerado emprestado pelo GitHub
     
     # Passo a passo das tarefas dentro do servidor
@@ -31,4 +30,17 @@ jobs:
           
       - name: Executar Testes
         # Roda o comando final no terminal do servidor para buscar e testar o código
-        run: pytest
+        run: pytest   
+        
+      - name: Criar Pacote Limpo (ZIP)
+        # O comando zip cria o arquivo 'calculadora.zip'.
+        # O '-x' diz: "Ignore essas pastas e arquivos" (testes e lixo do git)
+        run: zip -r calculadora.zip . -x "tests/*" ".github/*" ".git/*" "venv/*" "__pycache__/*" "*.pyc"
+
+      - name: Criar Release no GitHub
+        # Aqui usamos o GitHub CLI (gh) para criar a versão v1.0.0
+        # O 'env' passa a chave secreta do GitHub para o comando ter permissão de postar
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."
