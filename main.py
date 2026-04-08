@@ -11,6 +11,7 @@ import subtrairf
 import exponenciarf
 import multiplicarf
 
+# Teste no pull request do pipeline
 app = FastAPI()
 
 @app.get("/")

@@ -4,7 +4,7 @@ name: CI Calculadora
 # Gatilhos: O que faz o pipeline rodar?
 on: 
   workflow_dispatch: # 1. Botão de execução manual no GitHub
-  push: 
+  pull request: 
     branches: [dev] # 2. Automático ao receber código na branch 'dev'
 
 # Lista de trabalhos a serem executados
