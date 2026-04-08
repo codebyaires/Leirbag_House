@@ -1,4 +1,4 @@
-from exponenciarf import exponenciar
+from src.exponenciarf import exponenciar
 
 def test_exponenciar():
     if exponenciar(2, 3) != 8:

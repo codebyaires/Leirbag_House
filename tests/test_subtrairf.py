@@ -1,5 +1,5 @@
 import pytest
-from subtrairf import subtrair
+from src.subtrairf import subtrair
 
 def test_subtrair():
     if subtrair(5, 3) != 2:
