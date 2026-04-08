@@ -30,20 +30,19 @@ jobs:
         
       - name: Criar Pacote Limpo (ZIP)
         run: |
-          # 1. Cria uma pasta temporária chamada 'dist' (distribuição)
-          mkdir dist
+          # 1. Cria a pasta de limpeza FORA do diretório atual para evitar o erro de cópia infinita
+          mkdir ../dist_entrega
           
-          # 2. Copia todos os arquivos visíveis para lá
-          # O '*' já ignora automaticamente pastas ocultas como .git e .github
-          cp -r * dist/
+          # 2. Copia tudo para essa pasta externa
+          cp -r . ../dist_entrega
           
-          # 3. Deleta manualmente o que o professor não quer na entrega
-          rm -rf dist/tests
-          rm -rf dist/README.md
-          rm -rf dist/.gitignore
+          # 3. Entra na pasta externa e remove o que o professor não quer
+          cd ../dist_entrega
+          rm -rf tests .git .github README.md .gitignore venv __pycache__ *.pyc
           
-          # 4. Entra na pasta e gera o zip do que sobrou
-          cd dist && zip -r ../calculadora.zip .
+          # 4. Gera o zip e joga ele de volta para a pasta original do GitHub Actions
+          # $GITHUB_WORKSPACE é o endereço da pasta onde o robô de Release vai procurar o arquivo
+          zip -r $GITHUB_WORKSPACE/calculadora.zip .
 
       - name: Criar Release no GitHub
         env:
