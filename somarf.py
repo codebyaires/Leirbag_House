@@ -1,3 +1,3 @@
 # Função Somar
 def somar(a: float, b: float):
-    return {"resultado": 0}
+    return {"resultado": a + b}
