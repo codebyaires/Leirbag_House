@@ -3,13 +3,13 @@ from fastapi import FastAPI
 from fastapi.responses import RedirectResponse
 
 # Os Imports dos arquivos dos colaboradores afiliados
-import somarf
-import dividirf
-import raizf
-import fatorarf
-import subtrairf
-import exponenciarf
-import multiplicarf
+import src.somarf as somarf
+import src.dividirf as dividirf
+import src.raizf as raizf
+import src.fatorarf as fatorarf
+import src.subtrairf as subtrairf
+import src.exponenciarf as exponenciarf
+import src.multiplicarf as multiplicarf
 
 # Teste no pull request do pipeline
 app = FastAPI()

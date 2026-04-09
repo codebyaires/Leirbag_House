@@ -1,7 +1,7 @@
 name: release
 on:
   push:
-    branches: [main]
+    branches: [fix/release-pipeline]
 
 permissions:
   contents: write
@@ -29,22 +29,26 @@ jobs:
         run: pytest 
         
       - name: Criar Pacote Limpo (ZIP)
-        # O segredo aqui é o '-x' repetido e as aspas. 
-        # Adicionei o README e o .gitignore conforme você pediu.
         run: |
-          zip -r calculadora.zip . \
-          -x "tests/*" \
-          -x ".git/*" \
-          -x ".github/*" \
-          -x "README.md" \
-          -x ".gitignore" \
-          -x "venv/*" \
-          -x "*/__pycache__/*" \
-          -x "*.pyc"
+          # 1. Cria a pasta de limpeza FORA do diretório atual para evitar o erro de cópia infinita
+          mkdir ../dist_entrega
+          
+          # 2. Copia tudo para essa pasta externa
+          cp -r . ../dist_entrega
+          
+          # 3. Entra na pasta externa e remove o que o professor não quer
+          cd ../dist_entrega
+          rm -rf tests .git .github README.md .gitignore venv __pycache__ *.pyc
+          
+          # 4. Gera o zip e joga ele de volta para a pasta original do GitHub Actions
+          # $GITHUB_WORKSPACE é o endereço da pasta onde o robô de Release vai procurar o arquivo
+          zip -r $GITHUB_WORKSPACE/calculadora.zip .
 
       - name: Criar Release no GitHub
-        # O 'env' precisa estar exatamente neste recuo
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        # Colocamos tudo em uma linha única para não ter erro de espaço ou caractere oculto
-        run: gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste." --clobber
+        run: |
+          gh release delete v1.0.0 --yes || true
+          
+          # Cria a nova release com o ZIP limpo
+          gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."

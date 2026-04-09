@@ -1,5 +1,5 @@
 import pytest
-import raizf
+import src.raizf as raizf
 
 def test_raiz():
     if raizf.raiz(9)!= 3:

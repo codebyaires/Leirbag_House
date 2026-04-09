@@ -1,5 +1,5 @@
 import pytest
-from multiplicarf import multiplicar
+from src.multiplicarf import multiplicar
 
 def test_multiplicar():
     if multiplicar(0,1) != 0:
