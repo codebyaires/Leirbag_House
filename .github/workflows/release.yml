@@ -30,19 +30,19 @@ jobs:
         
       - name: Criar Pacote Limpo (ZIP)
         run: |
-          # 1. Cria a pasta de limpeza FORA do diretório atual para evitar o erro de cópia infinita
-          mkdir ../dist_entrega
+          # 1. Cria uma pasta temporária vazia
+          mkdir pacote_entrega
           
-          # 2. Copia tudo para essa pasta externa
-          cp -r . ../dist_entrega
+          # 2. Copia APENAS a pasta 'src' para dentro dela. 
+          # Como o requirements.txt, o README e os arquivos do Git estão fora da 'src', 
+          # eles já ficam para trás automaticamente aqui!
+          cp -r src pacote_entrega/
           
-          # 3. Entra na pasta externa e remove o que o professor não quer
-          cd ../dist_entrega
-          rm -rf tests .git .github README.md .gitignore venv __pycache__ *.pyc
+          # 3. Caça e destrói qualquer pasta __pycache__ que o 'pytest' acabou de gerar
+          find pacote_entrega -type d -name "__pycache__" -exec rm -rf {} +
           
-          # 4. Gera o zip e joga ele de volta para a pasta original do GitHub Actions
-          # $GITHUB_WORKSPACE é o endereço da pasta onde o robô de Release vai procurar o arquivo
-          zip -r $GITHUB_WORKSPACE/calculadora.zip .
+          # 4. Entra na pasta limpa e gera o zip final
+          cd pacote_entrega && zip -r ../calculadora.zip .
 
       - name: Criar Release no GitHub
         env:
