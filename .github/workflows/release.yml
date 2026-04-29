@@ -52,22 +52,3 @@ jobs:
           
           # Cria a nova release com o ZIP limpo
           gh release create v1.0.0 calculadora.zip --title "Release v1.0.0" --notes "Versão oficial de produção sem arquivos de teste."
-
-
-  deploy:
-    name: Deploy para o Render
-    needs: liberar # Regra de ouro: Só faz o deploy se a release (ZIP) foi criada com sucesso
-    runs-on: ubuntu-latest
-    
-    steps:
-      - name: Avisar o Render para atualizar a produção
-        env:
-          # Puxa a URL secreta do cofre do repositório
-          DEPLOY_HOOK: ${{ secrets.RENDER_DEPLOY_HOOK }}
-        # O 'curl -X POST' é o comando de terminal para acessar o link e disparar o webhook
-        run: |
-          if [ -z "$DEPLOY_HOOK" ]; then
-            echo "Erro: Webhook do Render não encontrado nos Secrets."
-            exit 1
-          fi
-          curl -X POST $DEPLOY_HOOK
